@@ -13,8 +13,10 @@ public class PolygonMaker {
     final int IMAGE_HEIGHT = 200;
 
     JLabel imageLabel;
+    DrawnPolygon p;
 
-    int scale = 50;
+    int newPointX;
+    int newPointY;
 
     public PolygonMaker() {
         //set up frame
@@ -27,30 +29,43 @@ public class PolygonMaker {
 
         //set up BufferedImage
         bi = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        p = new DrawnPolygon(IMAGE_WIDTH / 2, IMAGE_HEIGHT / 2);
 
         //JLabel
         imageLabel = new JLabel();
         updateImage();
-        JLabel scaleLabel = new JLabel("Scale: ");
+        JLabel newPointLabel = new JLabel("New Point: ");
+        JLabel newPointXLabel = new JLabel("X: ");
+        JLabel newPointYLabel = new JLabel("Y: ");
 
         //JTextFields
-        //SCALE
-        JTextField scaleField = new JTextField("" + scale, 3);
-        scaleField.addActionListener(new ActionListener() {
+        //NEW POINT
+        JTextField newPointXField = new JTextField("" + newPointX, 3);
+        JTextField newPointYField = new JTextField("" + newPointY, 3);
+
+        //JButtons
+        JButton newPointBtn = new JButton("Add New Point");
+        newPointBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                scale = Integer.parseInt(scaleField.getText());
+                newPointX = Integer.parseInt(newPointXField.getText());
+                newPointY = Integer.parseInt(newPointYField.getText());
+                p.addPoint(newPointX, newPointY);
+                newPointXField.setText("0");
+                newPointYField.setText("0");
                 updateImage();
             }
         });
 
-        //initialize the image
-
 
         //end setup
         panel.add(imageLabel);
-        panel.add(scaleLabel);
-        panel.add(scaleField);
+        panel.add(newPointLabel);
+        panel.add(newPointXLabel);
+        panel.add(newPointXField);
+        panel.add(newPointYLabel);
+        panel.add(newPointYField);
+        panel.add(newPointBtn);
         frame.add(panel);
         panel.setVisible(true);
         frame.setVisible(true);
@@ -65,16 +80,19 @@ public class PolygonMaker {
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setRenderingHints(rh);
 
-        //draw image border
+        //draw image border and coordinate plane
         g.setColor(Color.BLACK);
         g.drawLine(0,0,IMAGE_WIDTH, 0);
         g.drawLine(IMAGE_WIDTH - 1, 0, IMAGE_WIDTH - 1, IMAGE_HEIGHT);
         g.drawLine(IMAGE_WIDTH - 1, IMAGE_HEIGHT - 1, 0, IMAGE_HEIGHT - 1);
         g.drawLine(0, 0, 0, IMAGE_HEIGHT - 1);
 
+        g.drawLine(IMAGE_WIDTH / 2, 0, IMAGE_WIDTH / 2, IMAGE_HEIGHT);
+        g.drawLine(0, IMAGE_HEIGHT /2, IMAGE_WIDTH, IMAGE_HEIGHT / 2);
+
         //draw Shape
         g.setColor(Color.RED);
-        g.fillOval((IMAGE_WIDTH / 2) - (scale/2), (IMAGE_HEIGHT / 2) - (scale/2), scale, scale);
+        p.render(g);
 
         imageLabel.setIcon(new ImageIcon(bi));
     }
