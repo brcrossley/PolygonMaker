@@ -23,7 +23,6 @@ public class DrawnPolygon {
         for(int i = 0; i < renderedPoints.length - 1; i++) {
             if(renderedPoints[i+1] != null) {
                 g.drawLine(renderedPoints[i].x, renderedPoints[i].y, renderedPoints[i + 1].x, renderedPoints[i + 1].y);
-                System.out.println(renderedPoints[i].x);
             }
         }
     }
