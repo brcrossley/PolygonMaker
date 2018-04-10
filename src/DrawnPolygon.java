@@ -16,6 +16,20 @@ public class DrawnPolygon {
         points.add(p);
     }
 
+    public void removePoint(int index) {
+        if(index >= 0 && index < points.size()) {
+            points.remove(index);
+        }
+    }
+
+    public void clearPoints() {
+        points.clear();
+    }
+
+    public int getSize() {
+        return points.size();
+    }
+
     public void render(Graphics g) {
         Point renderedPoints[] = new Point[points.size()];
         renderedPoints = points.toArray(renderedPoints);

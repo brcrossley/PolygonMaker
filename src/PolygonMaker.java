@@ -43,6 +43,30 @@ public class PolygonMaker {
         JTextField newPointXField = new JTextField("" + newPointX, 3);
         JTextField newPointYField = new JTextField("" + newPointY, 3);
 
+        newPointXField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newPointX = Integer.parseInt(newPointXField.getText());
+                newPointY = Integer.parseInt(newPointYField.getText());
+                p.addPoint(newPointX, newPointY);
+                newPointXField.setText("0");
+                newPointYField.setText("0");
+                updateImage();
+            }
+        });
+
+        newPointYField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newPointX = Integer.parseInt(newPointXField.getText());
+                newPointY = Integer.parseInt(newPointYField.getText());
+                p.addPoint(newPointX, newPointY);
+                newPointXField.setText("0");
+                newPointYField.setText("0");
+                updateImage();
+            }
+        });
+
         //JButtons
         JButton newPointBtn = new JButton("Add New Point");
         newPointBtn.addActionListener(new ActionListener() {
@@ -56,6 +80,23 @@ public class PolygonMaker {
                 updateImage();
             }
         });
+        JButton undoPointBtn = new JButton("Undo Last Point");
+        undoPointBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                p.removePoint(p.getSize() - 1);
+                updateImage();
+            }
+        });
+
+        JButton clearBtn = new JButton("Clear Points");
+        clearBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                p.clearPoints();
+                updateImage();
+            }
+        });
 
 
         //end setup
@@ -66,6 +107,8 @@ public class PolygonMaker {
         panel.add(newPointYLabel);
         panel.add(newPointYField);
         panel.add(newPointBtn);
+        panel.add(undoPointBtn);
+        panel.add(clearBtn);
         frame.add(panel);
         panel.setVisible(true);
         frame.setVisible(true);
